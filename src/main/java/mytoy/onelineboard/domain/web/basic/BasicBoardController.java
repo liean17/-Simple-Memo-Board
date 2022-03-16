@@ -55,8 +55,16 @@ public class BasicBoardController {
         memoryMemoRepository.update(memoId, memo);
         return "redirect:/basic/memos/{memoId}";
     }
-    @GetMapping("/delete")
-    public String deleteForm(@PathVariable Long memoId) {
+
+    @GetMapping("/{memoId}/delete")
+    public String deleteForm(@PathVariable Long memoId, Model model) {
+        Memo memo = memoryMemoRepository.findById(memoId);
+        model.addAttribute("memo", memo);
+        return "basic/deleteForm";
+    }
+
+    @PostMapping("/{memoId}/delete")
+    public String deleteMemo(@PathVariable Long memoId) {
         memoryMemoRepository.delete(memoId);
         return "redirect:/basic/memos";
     }

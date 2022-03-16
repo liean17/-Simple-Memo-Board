@@ -8,7 +8,8 @@
 <body>
 <div class="container" style="max-width: 600px">
     <div class="py-5 text-center">
-        <h2>한 줄 게시판</h2> </div>
+        <h2>한 줄 게시판</h2>
+    </div>
     <div class="row">
         <div class="col">
             <button class="btn btn-primary float-end" onclick="location.href='addForm.html'" th:onclick="|location.href='@{/basic/memos/add}'|" type="button">새 글 쓰기</button>
@@ -27,7 +28,6 @@
                 <td><a href="memo.html" th:href="@{/basic/memos/{memoId}(memoId=${memo.id})}" th:text="${memo.id}">id</a></td>
                 <td th:text="${memo.username}">이름</a></td>
                 <td><a href="memo.html" th:href="@{|/basic/memos/${memo.id}|}" th:text="${memo.title}">제목</a></td>
-                <td><button>삭제</button></td>
             </tr>
             </tbody>
         </table>
