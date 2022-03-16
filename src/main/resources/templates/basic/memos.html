@@ -19,14 +19,15 @@
         <table class="table">
             <thead>
             <tr>
-                <th>ID</th> <th>이름</th> <th>제목</th> <th>내용</th>
+                <th>ID</th> <th>이름</th> <th>제목</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="memo : ${memos}">
                 <td><a href="memo.html" th:href="@{/basic/memos/{memoId}(memoId=${memo.id})}" th:text="${memo.id}">id</a></td>
                 <td th:text="${memo.username}">이름</a></td>
-                <td><a href="memo.html" th:href="@{|/basic/items/${memo.id}|}" th:text="${memo.title}">제목</a></td>
+                <td><a href="memo.html" th:href="@{|/basic/memos/${memo.id}|}" th:text="${memo.title}">제목</a></td>
+                <td><button>삭제</button></td>
             </tr>
             </tbody>
         </table>

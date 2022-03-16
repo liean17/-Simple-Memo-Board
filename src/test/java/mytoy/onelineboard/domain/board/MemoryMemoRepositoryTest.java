@@ -56,4 +56,20 @@ class MemoryMemoRepositoryTest {
         assertThat(findMemo.getText()).isEqualTo(upMemo.getText());
     }
 
+    @Test
+    void deleteMemo(){
+        //given
+        Memo memo1 = new Memo("ㅇㅇ","먼데","무냐고");
+        Memo memo2 = new Memo("ㅇㅇ","먼데","무냐고");
+        Memo savedMemo1 = memoryMemoRepository.save(memo1);
+        Memo savedMemo2 = memoryMemoRepository.save(memo2);
+        Long findId1 = savedMemo1.getId();
+        Long findId2 = savedMemo2.getId();
+        //when
+        memoryMemoRepository.delete(findId1);
+        List<Memo> result = memoryMemoRepository.findAll();
+        //then
+        assertThat(result.size()).isEqualTo(1);
+    }
+
 }

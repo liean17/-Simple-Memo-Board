@@ -5,8 +5,7 @@ import mytoy.onelineboard.domain.board.Memo;
 import mytoy.onelineboard.domain.board.MemoryMemoRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -19,21 +18,46 @@ public class BasicBoardController {
     private final MemoryMemoRepository memoryMemoRepository;
 
     @GetMapping
-    public String memos(Model model){
+    public String memos(Model model) {
         List<Memo> memos = memoryMemoRepository.findAll();
-        model.addAttribute("memos",memos);
+        model.addAttribute("memos", memos);
         return "basic/memos";
     }
 
+    @GetMapping("/{memoId}")
+    public String memo(@PathVariable Long memoId, Model model) {
+        Memo memo = memoryMemoRepository.findById(memoId);
+        model.addAttribute("memo", memo);
+        return "basic/memo";
+    }
 
-    /**
-     * 테스트용
-     */
+    @GetMapping("/add")
+    public String addForm() {
+        return "/basic/addForm";
+    }
 
-    @PostConstruct
-    public void init(){
-        memoryMemoRepository.save(new Memo("김두한","나 김두한이다","방금피자시켰다."));
-        memoryMemoRepository.save(new Memo("하야시","난다고래","방금치킨시켰다."));
+    @PostMapping("/add")
+    public String addMemoV2(@ModelAttribute("memo") Memo memo, Model model) {
+        memoryMemoRepository.save(memo);
+        model.addAttribute("memo", memo);
+        return "redirect:" + memo.getId();
+    }
 
+    @GetMapping("/{memoId}/edit")
+    public String editForm(@PathVariable Long memoId, Model model) {
+        Memo memo = memoryMemoRepository.findById(memoId);
+        model.addAttribute("memo", memo);
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{memoId}/edit")
+    public String editMemo(@PathVariable Long memoId, @ModelAttribute Memo memo) {
+        memoryMemoRepository.update(memoId, memo);
+        return "redirect:/basic/memos/{memoId}";
+    }
+    @GetMapping("/delete")
+    public String deleteForm(@PathVariable Long memoId) {
+        memoryMemoRepository.delete(memoId);
+        return "redirect:/basic/memos";
     }
 }

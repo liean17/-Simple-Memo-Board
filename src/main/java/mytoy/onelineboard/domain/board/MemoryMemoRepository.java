@@ -30,11 +30,16 @@ public class MemoryMemoRepository {
     }
     public void update(Long memoId, Memo updateParam){
         Memo findMemo = findById(memoId);
+        findMemo.setUsername(updateParam.getUsername());
         findMemo.setTitle(updateParam.getTitle());
         findMemo.setText(updateParam.getText());
     }
     public void clearStore(){
         store.clear();
+    }
+
+    public void delete(Long memoId){
+        store.remove(memoId);
     }
 
 
