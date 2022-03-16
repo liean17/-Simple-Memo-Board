@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link href="../css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>한 줄 게시판</h2> </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end" onclick="location.href='addForm.html'" th:onclick="|location.href='@{/basic/memos/add}'|" type="button">새 글 쓰기</button>
+        </div>
+    </div>
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th> <th>이름</th> <th>제목</th> <th>내용</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="memo : ${memos}">
+                <td><a href="memo.html" th:href="@{/basic/memos/{memoId}(memoId=${memo.id})}" th:text="${memo.id}">id</a></td>
+                <td th:text="${memo.username}">이름</a></td>
+                <td><a href="memo.html" th:href="@{|/basic/items/${memo.id}|}" th:text="${memo.title}">제목</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div> <!-- /container -->
+</body>
+</html>
