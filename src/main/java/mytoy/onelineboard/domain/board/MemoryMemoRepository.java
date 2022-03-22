@@ -33,6 +33,9 @@ public class MemoryMemoRepository {
         findMemo.setUsername(updateParam.getUsername());
         findMemo.setTitle(updateParam.getTitle());
         findMemo.setText(updateParam.getText());
+        findMemo.setAgreement(updateParam.isAgreement());
+        findMemo.setMemoType(updateParam.getMemoType());
+        findMemo.setHorseHead(updateParam.getHorseHead());
     }
     public void clearStore(){
         store.clear();

@@ -11,6 +11,10 @@ public class Memo {
     private String title;
     private String text;
 
+    private boolean agreement;
+    private MemoType memoType;
+    private String horseHead;
+
     public Memo() {
     }
 
@@ -19,4 +23,5 @@ public class Memo {
         this.title = title;
         this.text = text;
     }
+
 }

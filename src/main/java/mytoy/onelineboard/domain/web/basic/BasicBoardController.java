@@ -1,21 +1,41 @@
 package mytoy.onelineboard.domain.web.basic;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import mytoy.onelineboard.domain.board.HorseHead;
 import mytoy.onelineboard.domain.board.Memo;
+import mytoy.onelineboard.domain.board.MemoType;
 import mytoy.onelineboard.domain.board.MemoryMemoRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/basic/memos")
 @RequiredArgsConstructor
 public class BasicBoardController {
 
     private final MemoryMemoRepository memoryMemoRepository;
+
+    @ModelAttribute("memoTypes")
+    public MemoType[] memoTypes() {
+        return MemoType.values();
+    }
+
+    @ModelAttribute("horseHeads")
+    public List<HorseHead> horseHeads() {
+        List<HorseHead> horseHeads = new ArrayList<>();
+        horseHeads.add(new HorseHead("NOTICE", "공지"));
+        horseHeads.add(new HorseHead("NORMAL", "일반글"));
+        horseHeads.add(new HorseHead("SECRET", "비밀글"));
+        return horseHeads;
+    }
+
 
     @GetMapping
     public String memos(Model model) {
@@ -32,12 +52,14 @@ public class BasicBoardController {
     }
 
     @GetMapping("/add")
-    public String addForm() {
+    public String addForm(Model model) {
+        model.addAttribute("memo",new Memo());
         return "/basic/addForm";
     }
 
     @PostMapping("/add")
-    public String addMemoV2(@ModelAttribute("memo") Memo memo, Model model) {
+    public String addMemo(@ModelAttribute("memo") Memo memo, Model model) {
+        log.info("memo.agreement={}",memo.isAgreement());
         memoryMemoRepository.save(memo);
         model.addAttribute("memo", memo);
         return "redirect:" + memo.getId();

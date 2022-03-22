@@ -34,6 +34,29 @@
     </div>
 
     <hr class="my-4">
+        <div>약관 동의 여부</div>
+        <div>
+            <div class="form-check">
+                <input type="checkbox" id="agreement" th:field="${memo.agreement}" class="form-check-input" disabled>
+                <label for="agreement" class="form-check-label">약관 동의</label>
+            </div>
+        </div>
+        <div>글 종류</div>
+        <div>
+            <div th:each="type : ${memoTypes}" class="form-check form-check-inline">
+                <input type="radio" th:field="${memo.memoType}" th:value="${type.name()}" class="form-check-input" disabled>
+                <label th:for="${#ids.prev('memoType')}" th:text="${type.description}" class="form-check-label">글 종류</label>
+            </div>
+        </div>
+        <div>
+            <div>배송 방식</div>
+            <select th:field="${memo.horseHead}" class="form-select" disabled>
+                <option value="">==전송 방식 선택==</option>
+                <option th:each="horseHead : ${horseHeads}" th:value="${horseHead.code}"
+                        th:text="${horseHead.displayName}">NORMAL</option>
+            </select>
+        </div>
+        <hr class="my-4">
     <div class="row">
     <div class="col">
         <button class="w-100 btn btn-primary btn-lg" onclick="location.href='editForm.html'" th:onclick="|location.href='@{/basic/memos/{memoId}/edit(memoId=${memo.id})}'|" type="button">내용 수정</button>
