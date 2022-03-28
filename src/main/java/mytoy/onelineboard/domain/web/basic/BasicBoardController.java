@@ -6,9 +6,15 @@ import mytoy.onelineboard.domain.board.HorseHead;
 import mytoy.onelineboard.domain.board.Memo;
 import mytoy.onelineboard.domain.board.MemoType;
 import mytoy.onelineboard.domain.board.MemoryMemoRepository;
+import mytoy.onelineboard.domain.web.basic.form.MemoSaveForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -58,11 +64,26 @@ public class BasicBoardController {
     }
 
     @PostMapping("/add")
-    public String addMemo(@ModelAttribute("memo") Memo memo, Model model) {
-        log.info("memo.agreement={}",memo.isAgreement());
-        memoryMemoRepository.save(memo);
-        model.addAttribute("memo", memo);
-        return "redirect:" + memo.getId();
+    public String addMemo(@Validated @ModelAttribute("memo") MemoSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "basic/addForm";
+        }
+
+        //성공로직
+        Memo memo = new Memo();
+        memo.setUsername(form.getUsername());
+        memo.setTitle(form.getTitle());
+        memo.setText(form.getText());
+        memo.setAgreement(form.isAgreement());
+        memo.setMemoType(form.getMemoType());
+        memo.setHorseHead(form.getHorseHead());
+
+        Memo savedMemo = memoryMemoRepository.save(memo);
+
+        redirectAttributes.addAttribute("memoId",savedMemo.getId());
+        return "redirect:/basic/memos/{memoId}";
     }
 
     @GetMapping("/{memoId}/edit")
